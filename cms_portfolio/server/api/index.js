@@ -8,27 +8,34 @@ const funFactRoutes = require('../routes/funFactRoutes.js');
 const projectRoutes = require('../routes/projectRoutes.js');
 dotenv.config();
 
-const cors = require('cors');
+const cors = require("cors");
+const app = express()
 
 const corsOptions = {
-    origin: 'https://sugata-chanda.vercel.app',
-    // origin: 'http://localhost:5173/',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // allow cookies and credentials
-    allowedHeaders: ['Content-Type', 'Authorization'], // explicitly allow headers
-    optionsSuccessStatus: 204 // some legacy browsers choke on 204
+    origin: function (origin, callback) {
+        const allowedOrigins = [
+            "http://localhost:5173",
+            "https://sugata-chanda.vercel.app",
+        ];
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
 };
 
-
-const app = express();
 app.use(cors(corsOptions));
+
+
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => console.log("MongoDB connected"))
-    .catch(err => console.error(err));
+const MONGO_URI = process.env.MONGO_URI;
+
+mongoose
+    .connect(MONGO_URI)
+    .then(() => console.log("✅ MongoDB connected"))
+    .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/contact', contactRoutes);
@@ -39,17 +46,17 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "https://sugata-chanda.vercel.app");
-    // res.header("Access-Control-Allow-Origin", "http://localhost:5173/");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    if (req.method === "OPTIONS") {
-        res.sendStatus(204); // Respond to preflight requests
-    } else {
-        next();
-    }
-});
+// app.use((req, res, next) => {
+//     // res.header("Access-Control-Allow-Origin", "https://sugata-chanda.vercel.app");
+//     res.header("Access-Control-Allow-Origin", "http://localhost:5173/");
+//     res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS");
+//     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//     if (req.method === "OPTIONS") {
+//         res.sendStatus(204); // Respond to preflight requests
+//     } else {
+//         next();
+//     }
+// });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
