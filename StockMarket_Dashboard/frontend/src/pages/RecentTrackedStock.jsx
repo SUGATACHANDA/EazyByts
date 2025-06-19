@@ -39,8 +39,8 @@ const RecentStock = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white p-4 flex flex-col items-center">
-            <h1 className="text-3xl font-bold mb-6 text-blue-400">📁 Recent Tracked Stocks</h1>
+        <div className="min-h-screen bg-gray-900 text-white p-4 flex justify-center flex-col items-center">
+            <h1 className="lg:text-4xl text-2xl font-bold mb-6 text-blue-400">📁 Recent Tracked Stocks</h1>
             <Link
                 to="/"
                 className="mt-4 mb-5 text-blue-400 underline hover:text-blue-300"
@@ -56,11 +56,11 @@ const RecentStock = () => {
                 <div className="text-gray-400">No recent stocks found.</div>
             )}
 
-            <div className="w-full max-w-2xl space-y-4">
+            <div className="w-full max-w-2xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {stocks.map((stock) => (
                     <div
                         key={stock._id}
-                        className="bg-gray-800 rounded-lg p-4 flex justify-between items-center"
+                        className="bg-gray-800 rounded-lg p-4 flex flex-col justify-between items-start"
                     >
                         <div>
                             <h2 className="text-xl font-semibold">{stock.symbol}</h2>
