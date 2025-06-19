@@ -41,6 +41,12 @@ const RecentStock = () => {
     return (
         <div className="min-h-screen bg-gray-900 text-white p-4 flex flex-col items-center">
             <h1 className="text-3xl font-bold mb-6 text-blue-400">📁 Recent Tracked Stocks</h1>
+            <Link
+                to="/"
+                className="mt-4 mb-5 text-blue-400 underline hover:text-blue-300"
+            >
+                ← Back to Tracker
+            </Link>
 
             {error && (
                 <div className="bg-red-600 px-4 py-2 rounded mb-4">{error}</div>
@@ -69,12 +75,7 @@ const RecentStock = () => {
                 ))}
             </div>
 
-            <Link
-                to="/"
-                className="mt-6 text-blue-400 underline hover:text-blue-300"
-            >
-                ← Back to Tracker
-            </Link>
+
         </div>
     );
 };
